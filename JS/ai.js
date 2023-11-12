@@ -1,14 +1,37 @@
-const loadAiTools = async () => {
+const loadAiTools = async (dataLimit) => {
     const res = await fetch(` https://openapi.programming-hero.com/api/ai/tools`);
     const data = await res.json();
-    displayAiTools(data?.data?.tools);
+    displayAiTools(data?.data?.tools, dataLimit);
 };
 
-const displayAiTools = (tools) => {
-    tools?.forEach(tool => {
+const displayAiTools = (tools, dataLimit) => {
+
+    const toolsContainer = document.getElementById('tools-container');
+    toolsContainer.textContent = '';
+    const seeMore = document.getElementById('see-more');
+    const noTools = document.getElementById('no-found-message');
+
+    // display no tools found message
+    if (tools.length === 0) {
+        noTools.classList.remove('hidden');
+    }
+
+    // display 6 tools only
+    else if (dataLimit && tools.length > dataLimit) {
+        tools = tools.slice(0, dataLimit);
+        seeMore.classList.remove('hidden');
+        noTools.classList.add('hidden');
+    }
+
+    else {
+        seeMore.classList.add('hidden');
+        noTools.classList.add('hidden');
+    }
+
+    // display all tools
+    tools.forEach(tool => {
         const { image, features, name, published_in } = tool || {};
 
-        const toolsContainer = document.getElementById('tools-container');
         const toolsDiv = document.createElement('div');
         toolsDiv.classList.add('p-5', 'border', 'rounded');
 
@@ -37,5 +60,8 @@ const displayAiTools = (tools) => {
         toolsContainer.appendChild(toolsDiv);
     })
 }
-
-loadAiTools();
+// See more tools by clicking 'see more' button
+document.getElementById('btn-see-more').addEventListener('click', function () {
+    loadAiTools();
+})
+loadAiTools(6);
