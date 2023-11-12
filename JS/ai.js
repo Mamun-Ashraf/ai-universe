@@ -58,10 +58,24 @@ const displayAiTools = (tools, dataLimit) => {
             </div>
         `
         toolsContainer.appendChild(toolsDiv);
+        toggleLoader(false);
     })
+}
+
+// toggle loader
+const toggleLoader = (isLoading) => {
+    const loader = document.getElementById('loader');
+    if (isLoading) {
+        loader.classList.remove('hidden');
+    }
+    else {
+        loader.classList.add('hidden');
+    }
 }
 // See more tools by clicking 'see more' button
 document.getElementById('btn-see-more').addEventListener('click', function () {
+    toggleLoader(true);
     loadAiTools();
 })
+
 loadAiTools(6);
