@@ -1,4 +1,5 @@
 const loadAiTools = async (dataLimit) => {
+    toggleLoader(true);
     const res = await fetch(` https://openapi.programming-hero.com/api/ai/tools`);
     const data = await res.json();
     displayAiTools(data?.data?.tools, dataLimit);
@@ -36,7 +37,7 @@ const displayAiTools = (tools, dataLimit) => {
         toolsDiv.classList.add('p-5', 'border', 'rounded');
 
         toolsDiv.innerHTML = `
-            <div class='h-60'>
+            <div class='h-60 shadow-lg'>
                 <img src=${image} alt="">
             </div>
             <h4 class="my-3 text-lg font-bold">Features</h4>
@@ -53,7 +54,7 @@ const displayAiTools = (tools, dataLimit) => {
                     </div>
                 </div>
                 <button>
-                    <i class="fa-solid fa-arrow-right text-red-400 bg-ray-100 rounded-full p-3"></i>
+                    <i class="fa-solid fa-arrow-right text-red-400 bg-gray-100 rounded-full p-3"></i>
                 </button>
             </div>
         `
@@ -74,7 +75,6 @@ const toggleLoader = (isLoading) => {
 }
 // See more tools by clicking 'see more' button
 document.getElementById('btn-see-more').addEventListener('click', function () {
-    toggleLoader(true);
     loadAiTools();
 })
 
