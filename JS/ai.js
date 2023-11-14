@@ -6,7 +6,7 @@ const loadAiTools = async (dataLimit) => {
 };
 
 const displayAiTools = (tools, dataLimit) => {
-    // console.log(tools);
+    console.log(tools);
     const toolsContainer = document.getElementById('tools-container');
     toolsContainer.textContent = '';
     const seeMore = document.getElementById('see-more');
@@ -94,6 +94,7 @@ const displayToolsDetails = (toolDetail) => {
         , input_output_examples, accuracy } = toolDetail || {};
     console.log(pricing);
     const modalContainer = document.getElementById('modal-container');
+    modalContainer.innerHTML = '';
     const modalContentDiv = document.createElement('div');
     modalContentDiv.classList.add('md:flex', 'gap-5', 'p-1', 'md:p-6');
     modalContentDiv.innerHTML = `
@@ -101,12 +102,12 @@ const displayToolsDetails = (toolDetail) => {
             <div>
                 <h3 class="text-lg font-bold">${description}</h3>
             </div>
-            <div class="flex gap-3 my-3">
-                <h3 class="bg-red-50 text-green-400 rounded p-3 text-center"><span>${pricing[0] ? pricing[0].price : 'Free Of Cost'}</span>/ <br> <span>${pricing[0].plan}</span></h3>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-3 my-3">
+                <h3 class="bg-red-50 text-green-400 rounded p-3 text-center"><span>${pricing?.[0] ? pricing[0].price : 'Free Of Cost'}</span>/ <br> <span>${pricing?.[0] ? pricing[0].plan : 'Basic'}</span></h3>
 
-                <h3 class="bg-red-50 text-orange-400 rounded p-3 text-center"><span>${pricing[1] ? pricing[1].price : 'Free Of Cost'}</span>/ <br> <span>${pricing[1].plan}</span></h3>
+                <h3 class="bg-red-50 text-orange-400 rounded p-3 text-center"><span>${pricing?.[1] ? pricing[1].price : 'Free Of Cost'}</span>/ <br> <span>${pricing?.[1] ? pricing[1].plan : 'Pro'}</span></h3>
 
-                <h3 class="bg-red-50 text-red-400 rounded p-3 text-center"><span>${pricing[2] ? pricing[2].price : 'Free Of Cost'}</span>/ <br> <span></span>${pricing[2].plan}</h3>
+                <h3 class="bg-red-50 text-red-400 rounded p-3 text-center"><span>${pricing?.[2] ? pricing[2].price : 'Free Of Cost'}</span>/ <br> <span></span>${pricing?.[2] ? pricing[2].plan : 'Enterprise'}</h3>
             </div>
             <div class="flex justify-between gap-3">
                 <div>
@@ -130,19 +131,27 @@ const displayToolsDetails = (toolDetail) => {
         </div>
         <div class="border rounded md:w-1/2 p-5">
             <div class='h-40 shadow-lg'>
-                <img src=${image_link[0]} alt="">
+                <img src=${image_link?.[0]} alt="">
             </div>
             <div class=''>
                 <h4 class="bg-red-400 text-white px-3 py-1 w-32 relative bottom-40 left-40 ${accuracy?.score ? 'block' : 'hidden'}">${accuracy.score * 100} % Accuracy</h4>
             </div>
-            ${input_output_examples.map(example => {
-            return `<h3 class="text-lg font-bold my-3">
-                        ${example.input}
+
+            ${input_output_examples
+            ? input_output_examples.map(example => `
+                    <h3 class="text-lg font-bold my-3">
+                        ${example.input ? example.input : 'Can you give any example?'}
                     </h3>
                     <p>
-                        ${example.output}
-                    </p>`;
-        }).join('')}
+                        ${example.output ? example.output : 'No! Not yet! Take a break!!!'}
+                    </p>
+                `).join('')
+            : `
+                    <h3 class="text-lg font-bold my-3">Can you give any example?</h3>
+                    <p>No! Not yet! Take a break!!!</p>
+                `}
+            
+        
         </div>
     `
     modalContainer.appendChild(modalContentDiv);
