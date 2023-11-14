@@ -91,8 +91,8 @@ const loadToolsDetails = async (id) => {
 
 const displayToolsDetails = (toolDetail) => {
     const { description, pricing, features, integrations, image_link
-        , input_output_examples
-    } = toolDetail || {};
+        , input_output_examples, accuracy } = toolDetail || {};
+    console.log(pricing);
     const modalContainer = document.getElementById('modal-container');
     const modalContentDiv = document.createElement('div');
     modalContentDiv.classList.add('md:flex', 'gap-5', 'p-1', 'md:p-6');
@@ -102,11 +102,11 @@ const displayToolsDetails = (toolDetail) => {
                 <h3 class="text-lg font-bold">${description}</h3>
             </div>
             <div class="flex gap-3 my-3">
-                <h3 class="bg-red-50 text-green-400 rounded p-3 text-center"><span>${pricing[0].plan}</span> <br> <span>${pricing[0] ? pricing[0].price : 'Free Of Cost'}</span></h3>
+                <h3 class="bg-red-50 text-green-400 rounded p-3 text-center"><span>${pricing[0] ? pricing[0].price : 'Free Of Cost'}</span>/ <br> <span>${pricing[0].plan}</span></h3>
 
-                <h3 class="bg-red-50 text-orange-400 rounded p-3 text-center"><span>${pricing[1].plan}</span> <br> <span>${pricing[1] ? pricing[1].price : 'Free Of Cost'}</span></h3>
+                <h3 class="bg-red-50 text-orange-400 rounded p-3 text-center"><span>${pricing[1] ? pricing[1].price : 'Free Of Cost'}</span>/ <br> <span>${pricing[1].plan}</span></h3>
 
-                <h3 class="bg-red-50 text-red-400 rounded p-3 text-center"><span>${pricing[2].plan}</span> <br> <span>${pricing[2] ? pricing[2].price : 'Free Of Cost'}</span></h3>
+                <h3 class="bg-red-50 text-red-400 rounded p-3 text-center"><span>${pricing[2] ? pricing[2].price : 'Free Of Cost'}</span>/ <br> <span></span>${pricing[2].plan}</h3>
             </div>
             <div class="flex justify-between gap-3">
                 <div>
@@ -129,7 +129,12 @@ const displayToolsDetails = (toolDetail) => {
             </div>
         </div>
         <div class="border rounded md:w-1/2 p-5">
-            <img src=${image_link[0]} alt="">
+            <div class='h-40 shadow-lg'>
+                <img src=${image_link[0]} alt="">
+            </div>
+            <div class=''>
+                <h4 class="bg-red-400 text-white px-3 py-1 w-32 relative bottom-40 left-40 ${accuracy?.score ? 'block' : 'hidden'}">${accuracy.score * 100} % Accuracy</h4>
+            </div>
             ${input_output_examples.map(example => {
             return `<h3 class="text-lg font-bold my-3">
                         ${example.input}
